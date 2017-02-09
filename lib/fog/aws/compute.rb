@@ -73,6 +73,7 @@ module Fog
       request :create_subnet
       request :create_tags
       request :create_volume
+      request :create_vpc_peering_connection
       request :create_vpc
       request :copy_image
       request :copy_snapshot
