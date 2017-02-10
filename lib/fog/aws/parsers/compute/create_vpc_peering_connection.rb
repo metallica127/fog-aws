@@ -6,13 +6,7 @@ module Fog
         class CreateVpcPeeringConnection < Fog::Parsers::Base
 
           def reset
-            @vpc_peering_connection = {
-                'accepterVpcInfo' => {},
-                'requesterVpcInfo' => {},
-                'status' => {},
-                'tagSet' => {}
-            }
-            @accepter_vpc_info = {}
+            @vpc_peering_connection = { 'accepterVpcInfo' => {}, 'requesterVpcInfo' => {}, 'status' => {}, 'tagSet' => {} }
             @response = {'vpcPeeringConnection' => {}}
             @tag = {}
           end
@@ -32,6 +26,7 @@ module Fog
           end
 
           def end_element(name)
+            puts name
             if @in_tag_set
               case name
                 when 'item'
@@ -45,28 +40,21 @@ module Fog
 
             elsif @in_accepter_vpc_info
               case name
-                when 'ipv6CidrBlockSet'
-                  puts 'FUUUUU ipv6CidrBlockSet'
-                  @vpc_peering_connection['accepterVpcInfo'][name] = value
-                when 'peeringOptions'
-                  puts 'FUUUUU peeringOptions'
-                  @vpc_peering_connection['accepterVpcInfo'][name] = value
+                #when 'ipv6CidrBlockSet' TODO never got in this request
+                #  @vpc_peering_connection['accepterVpcInfo'][name] = value
+                #when 'peeringOptions' TODO never got in this request
+                #  @vpc_peering_connection['accepterVpcInfo'][name] = value
                 when 'cidrBlock', 'ownerId', 'vpcId'
                   @vpc_peering_connection['accepterVpcInfo'][name] = value
-                  #@accepter_vpc_info[name] = value
                 when 'accepterVpcInfo'
-                  #@vpc_peering_connection['accepterVpcInfo'] = @accepter_vpc_info
-                  #@accepter_vpc_info = {}
                   @in_accepter_vpc_info = false
               end
             elsif @in_requester_vpc_info
               case name
-                when 'ipv6CidrBlockSet'
-                  puts 'FUUUUU ipv6CidrBlockSet'
-                  @vpc_peering_connection['requesterVpcInfo'][name] = value
-                when 'peeringOptions'
-                  puts 'FUUUUU peeringOptions'
-                  @vpc_peering_connection['requesterVpcInfo'][name] = value
+                #when 'ipv6CidrBlockSet' TODO never got in this request
+                #  @vpc_peering_connection['requesterVpcInfo'][name] = value
+                #when 'peeringOptions' TODO never got in this request
+                #  @vpc_peering_connection['requesterVpcInfo'][name] = value
                 when 'cidrBlock', 'ownerId', 'vpcId'
                   @vpc_peering_connection['requesterVpcInfo'][name] = value
                 when 'requesterVpcInfo'
@@ -81,10 +69,10 @@ module Fog
                   @in_status = false
               end
             else
-              #@response[name] = value
-
               case name
-                when 'expirationTime', 'vpcPeeringConnectionId'
+                when 'expirationTime'
+                  @vpc_peering_connection[name] = Time.parse(value)
+                when 'vpcPeeringConnectionId'
                   @vpc_peering_connection[name] = value
                 when 'vpcPeeringConnection'
                   @response['vpcPeeringConnection'] = @vpc_peering_connection

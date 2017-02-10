@@ -17,7 +17,7 @@ module Fog
         # * 'requestId'<~String> - Id of request
         # * 'vpcPeeringConnection'<~Hash>:
         # *   'accepterVpcInfo'<~Hash>
-        # *   'expirationTime'<~String>
+        # *   'expirationTime'<~Time>
         # *   'requesterVpcInfo'<~Hash>
         # *   'status'<~Hash>
         # *   'tagSet'<~Array>
@@ -25,13 +25,13 @@ module Fog
         # *
         # {Amazon API Reference}[http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateVpcPeeringConnection.html]
 
-        def create_vpc_peering_connection(peerOwnerId='default',peerVpcId, vpcId)
+        def create_vpc_peering_connection(peerOwnerId='default', peerVpcId, vpcId)
           request(
-             'Action' => 'CreateVpcPeeringConnection',
-             'PeerOwnerId' => peerOwnerId,
-             'PeerVpcId' => peerVpcId,
-             'VpcId' => vpcId,
-             :parser => Fog::Parsers::Compute::AWS::CreateVpcPeeringConnection.new
+              'Action' => 'CreateVpcPeeringConnection',
+              'PeerOwnerId' => peerOwnerId,
+              'PeerVpcId' => peerVpcId,
+              'VpcId' => vpcId,
+              :parser => Fog::Parsers::Compute::AWS::CreateVpcPeeringConnection.new
           )
         end
 
@@ -39,7 +39,7 @@ module Fog
 
       class Mock
 
-        def create_vpc_peering_connection(peerOwnerId='default',peerVpcId, vpcId)
+        def create_vpc_peering_connection(peerOwnerId='default', peerVpcId, vpcId)
 
         end
       end
